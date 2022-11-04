@@ -92,10 +92,6 @@ coin.addEventListener("click",
 )
 
 /*EVENTOS DE GLIMMER*/
-
-/*SI QUIERES PROBAR QUE EL GLIMMER FUNCIONA, COMENTA ESTE BLOQUE*/
-
-/*-------sin comentarlo, es poco posible que se pueda pulsar----------*/
 glimmer.addEventListener("mouseover",
     ()=>{
         if(power)
@@ -109,7 +105,6 @@ glimmer.addEventListener("mouseover",
         }
     }
 );
-/*-------------------------------------------------------------------*/
 
 glimmer.addEventListener("click",
     ()=>{
@@ -132,7 +127,7 @@ glimmer.addEventListener("click",
     }
 );
 
-
+/*INTERRUPTOR DEL MOVMIENTO DE GLIMMER */
 swit.addEventListener("change",
     ()=>{
         if(swit.checked)
@@ -144,8 +139,5 @@ swit.addEventListener("change",
         }
     }
 );
-
-
-
 
 
