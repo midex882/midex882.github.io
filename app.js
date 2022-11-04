@@ -9,6 +9,9 @@ let score = 0;
 let score_durum = 0;
 let durums = 0;
 
+/*BOOL PARA ENCENDER O APAGAR EL MOVIMIENTO DE GLIMMER */
+let power = true;
+
 /*VALOR DE LAS DIVISAS*/
 const gem_value = 100;
 const coin_value = 10;
@@ -23,6 +26,10 @@ const count_glimmer = document.getElementById("count_glimmer");
 const gem = document.getElementById("btn_gem");
 const coin = document.getElementById("btn_coin");
 const glimmer = document.getElementById("btn_glimmer");
+
+/*INTERRUPTOR DEL MOVIMIENTO DE GLIMMER */
+const swit = document.getElementById("check");
+
 
 /* MARCADOR DE PUNTUACION TOTAL */
 const sc = document.getElementById("sc_num");
@@ -91,12 +98,15 @@ coin.addEventListener("click",
 /*-------sin comentarlo, es poco posible que se pueda pulsar----------*/
 glimmer.addEventListener("mouseover",
     ()=>{
-        glimmer.innerText = "Good Luck";
-        glimmer.classList.add("btn_glimmer");
-        let top = Math.floor(Math.random()*95+5);
-        let left = Math.floor(Math.random()*95+5);         
-        glimmer.style.top = `${top}%`;
-        glimmer.style.left = `${left}%`;
+        if(power)
+        {
+            glimmer.innerText = "Good Luck";
+            glimmer.classList.add("btn_glimmer");
+            let top = Math.floor(Math.random()*95+5);
+            let left = Math.floor(Math.random()*95+5);         
+            glimmer.style.top = `${top}%`;
+            glimmer.style.left = `${left}%`;
+        }
     }
 );
 /*-------------------------------------------------------------------*/
@@ -110,13 +120,32 @@ glimmer.addEventListener("click",
         score_durum += glimmer_value;
         sc.innerText = score;
         sumar_durum(score_durum);
-        
-        let top = Math.floor(Math.random()*97+3);
-        let left = Math.floor(Math.random()*97+3);         
-        glimmer.style.top = `${top}%`;
-        glimmer.style.left = `${left}%`;
-        
+
+        if(power){
+            let top = Math.floor(Math.random()*97+3);
+            let left = Math.floor(Math.random()*97+3);         
+            glimmer.style.top = `${top}%`;
+            glimmer.style.left = `${left}%`;
+        }else{
+            
+        }        
     }
 );
+
+
+swit.addEventListener("change",
+    ()=>{
+        if(swit.checked)
+        {
+            power = true;
+        }else{
+            power = false;
+            glimmer.classList.remove("btn_glimmer");
+        }
+    }
+);
+
+
+
 
 
