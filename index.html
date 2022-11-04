@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="app.js" defer type="text/javascript"></script>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="shortcut icon" href="favicon/favicomatic/favicon.ico" type="image/x-icon">
+    <title>GEM RUN</title>
+</head>
+<body>
+    <header>
+        <h1>Gem Run</h1>
+        <div id="div_sc_num">
+            <h3>Score:</h3>
+            <h3 id="sc_num">0</h3>
+        </div>
+    </header>
+    <main>
+        <section id="currency">
+            <article id="gems">
+                <img src="img/gem.png" alt="">
+                <h2>Catch a gem if you can</h2>
+                <p>Each one is worth 100 points (or 1/2 of a durum)</p>
+                <div id="div_btn_gem">
+                    <button id="btn_gem">Catch me!</button>
+                </div>            
+                <div class="marker">
+                    <p>Coins collected: &nbsp</p>
+                    <p id="count_gem" class="counter">0</p>
+                </div>
+            </article>
+            <article id="coins">
+                <img src="img/coin.webp" alt="">
+                <h2>Take a coin! It's free</h2>
+                <p>Each one is worth 10 points (or 1/20 of a durum)</p>
+                <button id="btn_coin">Press me</button>
+                <div class="marker">
+                    <p>Coins collected: &nbsp</p>
+                    <p id="count_coin" class="counter">0</p>
+                </div>
+            </article>
+            <article id="glimmer">
+                <img src="img/glimmer.webp" alt="">
+                <h2>Try and get some glimmer</h2>
+                <p>Each one is worth 1000 points (or 5 durums)</p>
+                <button id="btn_glimmer">Good luck</button>
+                <div class="marker">
+                    <p>Coins collected: &nbsp</p>
+                    <p id="count_glimmer" class="counter">0</p>
+                </div>
+            </article>
+        </section>
+        <section id="durums">
+            <div>
+                <h2>AMOUNT OF DURUMS YOU HAVE EARNED</h2>
+                <h3>(When you reach 1000 points, you will be awarded 1 durum)</h3>
+            </div>
+            
+            <div id="durum_wrapper">
+
+            </div>
+        </section>
+
+    </main>
+    <footer>
+        <h4>Developed by Jose Mª Escalón Prada 2TDAW</h4>
+    </footer>
+</body>
+</html>

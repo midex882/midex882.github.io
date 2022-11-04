@@ -1,0 +1,139 @@
+@font-face {
+    font-family: "indi";
+    src: url(fonts/fedora/SF\ Fedora\ Outline.ttf);
+}
+
+body{
+    margin: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-image: url("img/back4.jpg");
+    background-size: 100%;
+}
+button{
+    background-color: gold;
+    border: 0px;
+    padding: 0.5rem;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: 1.5em;
+}
+
+header{
+    box-sizing: border-box;
+    display: flex;
+    position: fixed;
+    top: 0px;
+    justify-content: space-between;
+    padding: 1rem;
+    width: 100%;
+    background-color: rgb(34, 41, 58);
+}
+h1{
+    font-family: "indi";
+    color:gold;
+    font-size: 3em;
+    margin: 0px;
+}
+
+#div_sc_num{
+    display: flex;
+    font-family: Arial, Helvetica, sans-serif;
+    color: whitesmoke;
+    font-size: 1.2em;
+    margin-right: 6rem;
+}
+main{
+    margin-top: 6rem;
+    width: 90%;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+section{
+    margin-top: 3rem;
+    background-color: rgba(44, 44, 44, 0.822);
+    box-sizing: border-box;
+    border-radius: 20px;
+    padding: 1rem;
+    font-family: Arial, Helvetica, sans-serif;
+}
+#currency{
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    box-sizing: border-box;
+
+}
+main article{
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: whitesmoke;
+}
+article img{
+    max-width: 150px;
+}
+
+#div_btn_gem{
+    width: 100%;
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: repeat(5, 20%);
+}
+#btn_gem{
+    grid-row: 1/1;
+    grid-column: 3/4;
+}
+.marker{
+    display: flex;
+}
+
+.counter{
+    color: gold;
+    font-size: 1.1em;
+    font-weight: bolder;
+}
+
+.btn_glimmer{
+    float: left;
+    position: absolute;
+    z-index: 9999;
+    top: 30%;
+    left: 30%;
+}
+
+#durums{
+    color: whitesmoke;
+    width: 60%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+#durum_wrapper{
+    margin: auto;
+    display: grid;
+    width: 90%;
+    grid-template-columns: repeat(6, 15%);
+    grid-auto-rows: auto;
+    grid-gap: auto;
+}
+.durum_token{
+    max-width: 150px;
+}
+
+
+footer{
+    box-sizing: border-box;
+    background-color:rgba(44, 44, 44, 0.822); 
+    margin-top: 6rem;
+    width: 100%;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    padding: 0px 3rem;
+}
