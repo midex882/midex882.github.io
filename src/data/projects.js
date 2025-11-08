@@ -3,7 +3,7 @@ export const projects = [
     id: 1,
     title: "Guia Bastionado UEFI en Codelab",
     description: "Guía paso por paso",
-    url: "${import.meta.env.BASE_URL}projects/bastionado/Gitlab_Bastionado_UEFI_Lenovo/index.html",
+    url: "https://midex882.github.io/projects/bastionado/Gitlab_Bastionado_UEFI_Lenovo",
     image: "/images/sample1.png"
   },
   {
