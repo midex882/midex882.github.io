@@ -1,0 +1,139 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Bastionado de UEFI en Lenovo Legion 5 15AKP10</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid="ID de Google Analytics"
+                  id="identificador-unico-del-codelab"
+                  title="Bastionado de UEFI en Lenovo Legion 5 15AKP10"
+                  environment="web"
+                  feedback-link="Un enlace en el que los usuarios puedan darte feedback (quizás creando un issue en un repositorio de git)">
+    
+      <google-codelab-step label="Fundamentos: ¿Por qué proteger la UEFI?" duration="1">
+        <p>La UEFI (o BIOS) es el primer eslabón en la cadena de arranque de cualquier equipo. Si no está debidamente protegida, permite modificar el flujo de arranque, lo que puede facilitar accesos no autorizados al sistema y la manipulación de la seguridad básica.</p>
+<p>Para acceder a la BIOS/UEFI, pulsamos la tecla de BIOS/UEFI, que en este caso es la tecla <strong>F2</strong>. Dependiendo del equipo, puede ser cualquiea de las teclas <strong>F</strong>, <strong>ESC</strong> o <strong>DEL</strong></p>
+<p class="image-container"><img alt="alt text" src="img\\b23533a9d3df0c76.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Establecer Contraseña de Administrador y Usuario" duration="10">
+        <p>El primer paso (y puede que el más importante), es establecer las contraseñas de tipos de usuario.</p>
+<p>¿Por qué es esto importante? Es crítico ya que un atacante con acceso físico puede cambiar configuraciones de la BIOS que afecten a la seguridad de nuestro equipo, sin importar cómo de fuerte sea la seguridad planteada dentro del sistema operativo. Si el atacante consigue alterar del arranque para crear un hueco en nuestra seguridad, no habrá servido para nada, por lo que dificultamos esto añadiendo contraseñas para distintos apartados:</p>
+<p>Una vez dentro de la interfaz gráfica de la UEFI:</p>
+<ul>
+<li>Ve a la sección <strong>Security</strong>.</li>
+</ul>
+<p>Observamos las tres líneas superiores:</p>
+<ul>
+<li>Administrator password: Not set</li>
+<li>User password: Not set</li>
+<li>HDD password: Not set</li>
+</ul>
+<p class="image-container"><img alt="alt text" src="img\\cc94a762c1fdb492.png"></p>
+<p>Como podemos ver, ahora mismo no tenemos instaladas ninguna de las contraseñas, así que vamos a ir instalándolas una a una. Es <strong>MUY</strong> importante que la contraseña sea segura, por lo que debe tener al menos 14 caracteres que incluyan números, letras y símbolos y que sea lo más aleatoria posible.</p>
+<p>Para reforzar este estándar, tenemos una opción en el menú llamado <strong>Set Strong Passwors</strong>. Al activarlo, se auto comprueba que la contraseña introducida sea segura.</p>
+<p class="image-container"><img alt="alt text" src="img\\60e058d608974296.png"></p>
+<ul>
+<li>Seleccionamos <strong>&#34;Set Administrator Password&#34;</strong> e introducimos la misma contraseña en ambos campos para comprobarla.</li>
+</ul>
+<p>Es importante establecer esta contraseña primero, pues permite la implantación de la contraseña de la contraseña de disco duro.</p>
+<p class="image-container"><img alt="alt text" src="img\\2ffd0f50ecd34592.png"></p>
+<p>En este caso, como ejemplo únicamente, hemos puesto una contraseña que no cumple el estándar de seguridad, pero no debe hacerse así.</p>
+<ul>
+<li>A continuación, seleccionamos <strong>&#34;Set User Password&#34;</strong> e introducimos la misma contraseña en ambos campos. Es importante aclarar que esta contraseña, mientras que debe mantener el estándar de seguridad, debe ser completamente distinta a la contraseña de administrador.</li>
+<li>Por último, seleccionamos <strong>&#34;Set Hard DIsk Password&#34;</strong> y seguimos el mismo procedimiento que en las dos anteriores: misma contraseña en ambos campos, estándar de seguridad alto y distinta a las dos anteriores.</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Control de Arranque desde Dispositivos Externos o red" duration="5">
+        <p>¿Qué pasaría si el atacante, por ejemplo, inicia el dispositivo desde un USB con un sistema operativo nuevo cargado? Podría instalar un sistema operativo nuevo, abriéndole las puertas de nuestros datos de par en par. Por este motivo y otros más, vamos a impedir que se arranque nuestro equipo con un USB. Para ello:</p>
+<ul>
+<li>En la pestaña <strong>Boot</strong>, localiza &#34;USB Boot&#34; y oulsamos sobre el selector. Para máxima seguridad, deberá estar en <strong>Disabled</strong>.</li>
+</ul>
+<p class="image-container"><img alt="alt text" src="img\\bb3d2a37dfb175d8.png"></p>
+<p>Esto no es definitivo, por lo que si alguna vez necesitamos volver a activarlo, sólo tenemos que volver a este apartado y colocarlo en <strong>Enabled</strong>.</p>
+<p>De la misma forma, es posible conectarse a nuestro ordenador a través de la red y hacer que haga el arranque a través de un sistema operativo cargado por ella. Esto recibe el nombre de <strong>PXE Boot to LAN</strong>. Es un problema de seguridad, ya que en este caso, ni siquiera se requiere acceso físico al equipo para hacer un arranque alternativo.</p>
+<ul>
+<li>En la misma pestaña <strong>Boot</strong>, localizamos <strong>PXE Boot to LAN</strong>, y en el selector, marcamos <strong>Disabled</strong>.</li>
+</ul>
+<p class="image-container"><img alt="alt text" src="img\\ba9c3a207fb7adcc.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Gestor de Orden de Arranque" duration="0">
+        <p>Duration 0:02:00</p>
+<p>En línea con el apartado anterior, es posible alterar el orden de arranque para arrancar el equipo desde otro método que le  convenga al atacante, por lo que debemos organizar esto para evitar brechas:</p>
+<ul>
+<li>Ajusta el &#34;Boot Priority Order&#34; priorizando el disco interno de arranque (llamado probablemente Windows Boot Manager si tenemos windows como SO) (NVMe/HDD) sobre otros medios externos.</li>
+<li>Así, incluso con USB habilitado, el equipo arrancará por defecto desde el disco duro, dificultando ataques por dispositivos extraíbles.</li>
+</ul>
+<p class="image-container"><img alt="alt text" src="img\\876574301553f3d7.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Activa Secure Boot" duration="5">
+        <p>Introducido por Microsoft a partir de Windows 8, deniega la ejecución en el arranque de software no firmado y, en general, prohíbe la ejecución de cualquier cosa que no sea Windows. Algunas distribuciones Linux se han ido adaptando para que también se permita su ejecución. Es por esto que nosotros vamos a activarlo en nuestro equipo; no queremos nada que no sea el sistema operativo iniciándose en el arranque.</p>
+<ul>
+<li>En la sección <strong>Boot</strong>, activa la opción &#34;Secure Boot&#34;.</li>
+<li>Así solo podrás arrancar sistemas firmados por el fabricante, dificultando la ejecución de malware en el arranque.</li>
+<li>Comprueba que el &#34;Secure Boot Status&#34; esté en <em>Enabled</em>.</li>
+</ul>
+<p class="image-container"><img alt="alt text" src="img\\ec7566a125590523.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Valida la Configuración" duration="20">
+        <p>Ya hemos terminado! Siempre debemos recordar que la seguridad total no existe, por lo que todo impedimento que pongamos a un posible atacante es poco. Es por eso que, una vez hemos creado nuestra nueva configuración, comprobemos que está correctamente implantada:</p>
+<ul>
+<li>Guarda y reinicia.</li>
+<li>Intenta acceder de nuevo a la UEFI y verifica que se pide contraseña.</li>
+<li>Verifica que no es posible arrancar fácilmente desde USB ni desde PXE/LAN si así lo configuraste.</li>
+<li>Revisa que el Secure Boot se mantiene activo.</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Considera Limitaciones Físicas" duration="0">
+        <ul>
+<li>Aunque todas estas medidas refuerzan la UEFI, el acceso físico al equipo permite ataques avanzados (reset CMOS, &#34;master passwords&#34; de fabricante).</li>
+<li>Para máxima protección en entornos sensibles, restringe el acceso físico y considera cifrado de disco a nivel de sistema operativo.</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/prettify.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>
