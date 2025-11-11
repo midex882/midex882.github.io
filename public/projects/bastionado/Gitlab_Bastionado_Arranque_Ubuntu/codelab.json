@@ -1,0 +1,26 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2025-11-11T12:44:56+01:00",
+  "id": "identificador-unico-del-codelab2",
+  "duration": 0,
+  "title": "Guía: Bastionado del Arranque en Ubuntu Desktop (VirtualBox)",
+  "summary": "Guía de bastionado de arranque ubuntu desktop",
+  "source": "codelab.md",
+  "theme": "",
+  "status": [
+    "published"
+  ],
+  "category": [
+    "codelab",
+    "markdown"
+  ],
+  "tags": [
+    "web"
+  ],
+  "feedback": "Un enlace en el que los usuarios puedan darte feedback (quizás creando un issue en un repositorio de git)",
+  "ga": "ID de Google Analytics",
+  "url": "identificador-unico-del-codelab2"
+}

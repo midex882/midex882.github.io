@@ -1,0 +1,132 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Guía: Bastionado del Arranque en Ubuntu Desktop (VirtualBox)</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid="ID de Google Analytics"
+                  id="identificador-unico-del-codelab2"
+                  title="Guía: Bastionado del Arranque en Ubuntu Desktop (VirtualBox)"
+                  environment="web"
+                  feedback-link="Un enlace en el que los usuarios puedan darte feedback (quizás creando un issue en un repositorio de git)">
+    
+      <google-codelab-step label="Introducción" duration="0">
+        <p>Esta guía expone paso a paso cómo bastionar el arranque de Ubuntu Desktop bajo VirtualBox, siguiendo los criterios de la asignatura de &#34;Bastionado de Redes y Sistemas&#34;. Incluye comandos, procedimientos y recomendaciones según buenas prácticas de seguridad y los criterios de evaluación máximos.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="1. Ocultación del Menú de Arranque de GRUB" duration="0">
+        <p>Ocultar el menú previene cambios no autorizados en el arranque.</p>
+<p><strong>Pasos:</strong></p>
+<ol type="1">
+<li>Edita el archivo de configuración: <pre><code language="language-bash" class="language-bash">sudo nano /etc/default/grub
+</code></pre>
+</li>
+<li>Cambia la línea: <pre><code language="language-text" class="language-text">GRUB_TIMEOUT=5
+</code></pre>
+por<pre><code language="language-text" class="language-text">GRUB_TIMEOUT=0
+</code></pre>
+</li>
+<li>Guarda y cierra el editor (<code>Ctrl+O</code>, <code>Enter</code>, <code>Ctrl+X</code> en nano).</li>
+<li>Ejecuta: <pre><code language="language-bash" class="language-bash">sudo update-grub
+</code></pre>
+</li>
+<li>Reinicia el sistema y verifica que ya no se muestra el menú.[12]</li>
+</ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="2. Contraseña para Proteger la Modificación del Arranque" duration="0">
+        <p>Esto asegura que sólo usuarios autorizados puedan acceder o modificar opciones de GRUB.</p>
+<p><strong>Pasos para agregar contraseña cifrada (recomendado):</strong></p>
+<ol type="1">
+<li>Genera el hash de la contraseña:<pre><code language="language-bash" class="language-bash">sudo grub-mkpasswd-pbkdf2
+</code></pre>
+Introduce la contraseña y copia el hash resultante.</li>
+<li>Edita el script de GRUB:<pre><code language="language-bash" class="language-bash">sudo nano /etc/grub.d/40_custom
+</code></pre>
+</li>
+<li>Añade lo siguiente al final:<pre><code language="language-text" class="language-text">set superusers=&#34;root&#34;
+password_pbkdf2 root &lt;hash_copiado&gt;
+</code></pre>
+Reemplaza <code><hash_copiado></code> por tu hash.</li>
+<li>Restringe permisos:<pre><code language="language-bash" class="language-bash">sudo chmod 700 /etc/grub.d/40_custom
+</code></pre>
+</li>
+<li>Aplica los cambios:<pre><code language="language-bash" class="language-bash">sudo update-grub
+</code></pre>
+</li>
+<li>Al reiniciar, GRUB pedirá contraseña para entrar en opciones avanzadas.[11][15]</li>
+</ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="3. Copia de Seguridad de la Configuración de GRUB" duration="0">
+        <p>Permite restaurar la configuración al instante si hay problemas.</p>
+<p><strong>Pasos:</strong></p>
+<ol type="1">
+<li>Ejecuta: <pre><code language="language-bash" class="language-bash">sudo tar -zcvf ~/grub2_backup_$(date +%Y-%m-%d_%H-%M).tar.gz /etc/default/grub /etc/grub.d/ /boot/grub/grub.cfg
+</code></pre>
+</li>
+<li>Guarda el archivo generado en un lugar seguro, por ejemplo, otra máquina virtual o una memoria USB.</li>
+<li>Para restaurar: descomprime el archivo y copia los archivos a su ubicación, ejecutando luego <code>sudo update-grub</code>.[13]</li>
+</ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="4. Otras Opciones de Seguridad al Arranque" duration="0">
+        <ul>
+<li><strong>Desactiva el arranque por USB/external en la BIOS/UEFI:</strong> Impide la manipulación física.</li>
+<li><strong>Actualiza el kernel y paquetes:</strong> Mantén el sistema parcheado. <pre><code language="language-bash" class="language-bash">sudo apt update &amp;&amp; sudo apt upgrade
+</code></pre>
+</li>
+<li><strong>Habilita AppArmor:</strong><pre><code language="language-bash" class="language-bash">sudo apt install apparmor apparmor-utils apparmor-profiles
+sudo aa-enforce /etc/apparmor.d/*
+</code></pre>
+</li>
+<li><strong>Verifica permisos de archivos sensibles de GRUB y arranque:</strong><pre><code language="language-bash" class="language-bash">ls -l /etc/default/grub /etc/grub.d/ /boot/grub/grub.cfg
+</code></pre>
+Todos deben ser modificables sólo por root.[14]</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Conclusión" duration="0">
+        <p>Esta guía deja tu arranque de Ubuntu Desktop endurecido con menú oculto, protección con contraseña cifrada, backup y buenas prácticas adicionales recomendadas en seguridad. Añade imágenes de cada paso, terminal y resultado para completar la entrega y alcanzar la máxima puntuación en tu trabajo.</p>
+<p>Si deseas, inserta capturas usando:</p>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/prettify.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>
