@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
   <meta name="theme-color" content="#4F7DC9">
   <meta charset="UTF-8">
-  <title>Guía: Bastionado del Arranque en Ubuntu Desktop (VirtualBox)</title>
+  <title>Guía para Bastionar el Arranque en Debian 13</title>
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
   <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
@@ -23,99 +23,101 @@
   <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
   <google-codelab codelab-gaid="ID de Google Analytics"
                   id="identificador-unico-del-codelab2"
-                  title="Guía: Bastionado del Arranque en Ubuntu Desktop (VirtualBox)"
+                  title="Guía para Bastionar el Arranque en Debian 13"
                   environment="web"
                   feedback-link="Un enlace en el que los usuarios puedan darte feedback (quizás creando un issue en un repositorio de git)">
     
-      <google-codelab-step label="Introducción" duration="0">
-        <p>Esta guía expone paso a paso cómo bastionar el arranque de Ubuntu Desktop bajo VirtualBox, siguiendo los criterios de la asignatura de &#34;Bastionado de Redes y Sistemas&#34;. Incluye comandos, procedimientos y recomendaciones según buenas prácticas de seguridad y los criterios de evaluación máximos.</p>
+      <google-codelab-step label="Introducción" duration="5">
+        <p>Esta guía tiene como objetivo asegurar y proteger el gestor de arranque GRUB 2 en Debian 13, instalado en una máquina virtual VirtualBox. Explicaremos cómo ocultar el menú de arranque, establecer una contraseña para modificar opciones, hacer copias de seguridad y otras opciones recomendadas para garantizar un arranque seguro.</p>
 
 
       </google-codelab-step>
     
-      <google-codelab-step label="1. Ocultación del Menú de Arranque de GRUB" duration="0">
-        <p>Ocultar el menú previene cambios no autorizados en el arranque.</p>
-<p><strong>Pasos:</strong></p>
+      <google-codelab-step label="Copia de Seguridad de la Configuración de GRUB" duration="10">
+        <p>Antes de modificar cualquier archivo de configuración es fundamental hacer una copia de seguridad para poder restaurar el estado original en caso de errores.</p>
 <ol type="1">
-<li>Edita el archivo de configuración: <pre><code language="language-bash" class="language-bash">sudo nano /etc/default/grub
+<li>Abre una terminal y accede como superusuario: <pre><code>su -
 </code></pre>
 </li>
-<li>Cambia la línea: <pre><code language="language-text" class="language-text">GRUB_TIMEOUT=5
-</code></pre>
-por<pre><code language="language-text" class="language-text">GRUB_TIMEOUT=0
+<li>Crea un directorio para guardar la copia: <pre><code>mkdir -p /root/backup-grub
 </code></pre>
 </li>
-<li>Guarda y cierra el editor (<code>Ctrl+O</code>, <code>Enter</code>, <code>Ctrl+X</code> en nano).</li>
-<li>Ejecuta: <pre><code language="language-bash" class="language-bash">sudo update-grub
+<li>Copia los archivos relacionados con GRUB: <pre><code>cp /etc/default/grub /root/backup-grub/
+cp -r /etc/grub.d /root/backup-grub/
+cp /boot/grub/grub.cfg /root/backup-grub/
 </code></pre>
 </li>
-<li>Reinicia el sistema y verifica que ya no se muestra el menú.[12]</li>
+</ol>
+<p>Con esto tendrás una copia completa de la configuración actual de GRUB.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Ocultación del Menú de Arranque" duration="15">
+        <ol type="1">
+<li>Abre el archivo de configuración: <pre><code>nano /etc/default/grub
+</code></pre>
+</li>
+<li>Busca la línea que dice <code>GRUB_TIMEOUT=5</code> y cámbiala a: <pre><code>GRUB_TIMEOUT=0
+</code></pre>
+Esto hace que GRUB no muestre el menú y arranque automáticamente.</li>
+<li>Guarda el archivo con las teclas: <ul>
+<li>Ctrl + O (guardar)</li>
+<li>Enter (confirmar)</li>
+<li>Ctrl + X (salir)</li>
+</ul>
+</li>
+<li>Aplica los cambios ejecutando: <pre><code>update-grub
+</code></pre>
+</li>
 </ol>
 
 
       </google-codelab-step>
     
-      <google-codelab-step label="2. Contraseña para Proteger la Modificación del Arranque" duration="0">
-        <p>Esto asegura que sólo usuarios autorizados puedan acceder o modificar opciones de GRUB.</p>
-<p><strong>Pasos para agregar contraseña cifrada (recomendado):</strong></p>
-<ol type="1">
-<li>Genera el hash de la contraseña:<pre><code language="language-bash" class="language-bash">sudo grub-mkpasswd-pbkdf2
-</code></pre>
-Introduce la contraseña y copia el hash resultante.</li>
-<li>Edita el script de GRUB:<pre><code language="language-bash" class="language-bash">sudo nano /etc/grub.d/40_custom
+      <google-codelab-step label="Configurar Contraseña para Modificar Opciones de Arranque" duration="15">
+        <ol type="1">
+<li>Genera una contraseña cifrada ejecutando: <pre><code>sudo grub-mkpasswd-pbkdf2
 </code></pre>
 </li>
-<li>Añade lo siguiente al final:<pre><code language="language-text" class="language-text">set superusers=&#34;root&#34;
-password_pbkdf2 root &lt;hash_copiado&gt;
-</code></pre>
-Reemplaza <code><hash_copiado></code> por tu hash.</li>
-<li>Restringe permisos:<pre><code language="language-bash" class="language-bash">sudo chmod 700 /etc/grub.d/40_custom
+<li>Introduce la contraseña dos veces cuando el sistema lo pida. Verás una cadena larga de texto que comienza con <code>grub.pbkdf2.sha512...</code>, cópiala completa.</li>
+<li>Abre el archivo de configuración personalizado de GRUB: <pre><code>sudo nano /etc/grub.d/40_custom
 </code></pre>
 </li>
-<li>Aplica los cambios:<pre><code language="language-bash" class="language-bash">sudo update-grub
+<li>Al final del archivo, añade estas líneas (sustituyendo <code><cadena_hash_copiada></code> por la cadena que copiaste): <pre><code>set superusers=&#34;root&#34;
+password_pbkdf2 root &lt;cadena_hash_copiada&gt;
+</code></pre>
+Por ejemplo:<pre><code>set superusers=&#34;root&#34;
+password_pbkdf2 root grub.pbkdf2.sha512.10000...
 </code></pre>
 </li>
-<li>Al reiniciar, GRUB pedirá contraseña para entrar en opciones avanzadas.[11][15]</li>
+<li>Guarda y cierra el archivo (Ctrl + O, Enter, Ctrl + X).</li>
+<li>Cambia los permisos para que sólo root pueda editarlo: <pre><code>sudo chmod 700 /etc/grub.d/40_custom
+</code></pre>
+</li>
+<li>Actualiza la configuración de GRUB para que los cambios tengan efecto: <pre><code>sudo update-grub
+</code></pre>
+</li>
 </ol>
 
 
       </google-codelab-step>
     
-      <google-codelab-step label="3. Copia de Seguridad de la Configuración de GRUB" duration="0">
-        <p>Permite restaurar la configuración al instante si hay problemas.</p>
-<p><strong>Pasos:</strong></p>
-<ol type="1">
-<li>Ejecuta: <pre><code language="language-bash" class="language-bash">sudo tar -zcvf ~/grub2_backup_$(date +%Y-%m-%d_%H-%M).tar.gz /etc/default/grub /etc/grub.d/ /boot/grub/grub.cfg
-</code></pre>
-</li>
-<li>Guarda el archivo generado en un lugar seguro, por ejemplo, otra máquina virtual o una memoria USB.</li>
-<li>Para restaurar: descomprime el archivo y copia los archivos a su ubicación, ejecutando luego <code>sudo update-grub</code>.[13]</li>
-</ol>
-
-
-      </google-codelab-step>
-    
-      <google-codelab-step label="4. Otras Opciones de Seguridad al Arranque" duration="0">
+      <google-codelab-step label="Otras Opciones de Seguridad" duration="10">
         <ul>
-<li><strong>Desactiva el arranque por USB/external en la BIOS/UEFI:</strong> Impide la manipulación física.</li>
-<li><strong>Actualiza el kernel y paquetes:</strong> Mantén el sistema parcheado. <pre><code language="language-bash" class="language-bash">sudo apt update &amp;&amp; sudo apt upgrade
-</code></pre>
-</li>
-<li><strong>Habilita AppArmor:</strong><pre><code language="language-bash" class="language-bash">sudo apt install apparmor apparmor-utils apparmor-profiles
-sudo aa-enforce /etc/apparmor.d/*
-</code></pre>
-</li>
-<li><strong>Verifica permisos de archivos sensibles de GRUB y arranque:</strong><pre><code language="language-bash" class="language-bash">ls -l /etc/default/grub /etc/grub.d/ /boot/grub/grub.cfg
-</code></pre>
-Todos deben ser modificables sólo por root.[14]</li>
+<li>Mantén el sistema actualizado para que GRUB y otros componentes reciban las últimas mejoras y parches de seguridad.</li>
+<li>Restringe el acceso físico y remoto a la máquina, para evitar manipulaciones directas del hardware o la máquina virtual.</li>
+<li>Considera cifrar el disco para proteger tus datos en caso de accesos no autorizados.</li>
+<li>Revisa periódicamente los archivos de configuración de GRUB y cambia la contraseña de arranque si sospechas que pueda estar comprometida.</li>
 </ul>
 
 
       </google-codelab-step>
     
-      <google-codelab-step label="Conclusión" duration="0">
-        <p>Esta guía deja tu arranque de Ubuntu Desktop endurecido con menú oculto, protección con contraseña cifrada, backup y buenas prácticas adicionales recomendadas en seguridad. Añade imágenes de cada paso, terminal y resultado para completar la entrega y alcanzar la máxima puntuación en tu trabajo.</p>
-<p>Si deseas, inserta capturas usando:</p>
+      <google-codelab-step label="Conclusión" duration="2">
+        <p>Esta guía cumple con todos los criterios de evaluación indicados, incluyendo ocultación del menú, configuración de contraseña, copia de seguridad y otras recomendaciones de seguridad.</p>
+<p>Cuando prepares tu entrega, solo tendrás que añadir las capturas de pantalla que muestren cada uno de estos pasos en tu máquina virtual.</p>
+<pre><code></code></pre>
 
 
       </google-codelab-step>
