@@ -33,6 +33,12 @@
 
       </google-codelab-step>
     
+      <google-codelab-step label="Instalación de Debian y particionado" duration="20">
+        <p>Esta sección cubre la instalación</p>
+
+
+      </google-codelab-step>
+    
       <google-codelab-step label="Copia de Seguridad de la Configuración de GRUB" duration="10">
         <p>Antes de modificar cualquier archivo de configuración es fundamental hacer una copia de seguridad para poder restaurar el estado original en caso de errores.</p>
 <ol type="1">
@@ -54,7 +60,8 @@ cp /boot/grub/grub.cfg /root/backup-grub/
       </google-codelab-step>
     
       <google-codelab-step label="Ocultación del Menú de Arranque" duration="15">
-        <ol type="1">
+        <p>Para que el sistema inicie directamente sin mostrar el menú de GRUB:</p>
+<ol type="1">
 <li>Abre el archivo de configuración: <pre><code>nano /etc/default/grub
 </code></pre>
 </li>
@@ -76,7 +83,8 @@ Esto hace que GRUB no muestre el menú y arranque automáticamente.</li>
       </google-codelab-step>
     
       <google-codelab-step label="Configurar Contraseña para Modificar Opciones de Arranque" duration="15">
-        <ol type="1">
+        <p>Para evitar que usuarios no autorizados modifiquen el menú de GRUB, se puede proteger con contraseña:</p>
+<ol type="1">
 <li>Genera una contraseña cifrada ejecutando: <pre><code>sudo grub-mkpasswd-pbkdf2
 </code></pre>
 </li>
@@ -115,9 +123,7 @@ password_pbkdf2 root grub.pbkdf2.sha512.10000...
       </google-codelab-step>
     
       <google-codelab-step label="Conclusión" duration="2">
-        <p>Esta guía cumple con todos los criterios de evaluación indicados, incluyendo ocultación del menú, configuración de contraseña, copia de seguridad y otras recomendaciones de seguridad.</p>
-<p>Cuando prepares tu entrega, solo tendrás que añadir las capturas de pantalla que muestren cada uno de estos pasos en tu máquina virtual.</p>
-<pre><code></code></pre>
+        <p>Con estos pasos, tu sistema Debian 13 estará protegido desde la etapa de arranque, ocultando el menú GRUB y requiriendo autenticación para modificaciones, además de contar con copias de seguridad y buenas prácticas para mantener la seguridad del arranque.</p>
 
 
       </google-codelab-step>
