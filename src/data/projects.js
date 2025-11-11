@@ -12,7 +12,7 @@ export const projects = [
     id: 3,
     title: "Guía de Bastionado de Arranque en Ubuntu Desktop",
     description: "Guía paso por paso en Codelab",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800",
+    image: "/img/project2.jpg",
     tags: ["Gitlab", "Bastionado"],
     link: "https://midex882.github.io/projects/bastionado/Gitlab_Bastionado_Arranque_Ubuntu",
     github: "https://github.com/midex882/midex882.github.io/tree/main/public/projects/bastionado/Gitlab_Bastionado_Arranque_Ubuntu"
