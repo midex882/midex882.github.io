@@ -1,0 +1,269 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Proyecto 2: La red dividida</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid="UA-XXXXXXXXX-X"
+                  id="proyecto2-la-red-dividida"
+                  title="Proyecto 2: La red dividida"
+                  environment="web"
+                  feedback-link="https://gitlab.com/tu-grupo/proyecto2-la-red-dividida/-/issues">
+    
+      <google-codelab-step label="Introducción" duration="0">
+        <p>Actualmente, la organización posee 150 empleados distribuidos en 2 sedes y se trabaja con una única dirección de red: 192.172.0.0/22.<br> La estructura de la empresa es la siguiente:</p>
+<ul>
+<li>Sede 1: 100 empleados, divididos en dos departamentos simulados de 50 empleados cada uno.</li>
+<li>Sede 2: 50 empleados, un departamento simulado.</li>
+</ul>
+<p>Se ha decidido dividir la red de forma que cada sede cuente con su propia subred, permitiendo segmentar el tráfico y facilitar la escalabilidad.</p>
+<p class="image-container"><img alt="&amp;ldquo;Nuestra red&amp;rdquo;" src="img\\df61c7acd24405a5.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="División por sedes" duration="0">
+        <p>El objetivo de esta fase es asignar una subred diferente a cada sede para separar el tráfico y organizar la red de manera escalable.</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p>Subred</p>
+</td><td colspan="1" rowspan="1"><p>Sede</p>
+</td><td colspan="1" rowspan="1"><p>Dirección de red</p>
+</td><td colspan="1" rowspan="1"><p>Máscara</p>
+</td><td colspan="1" rowspan="1"><p>Rango de IPs</p>
+</td><td colspan="1" rowspan="1"><p>Broadcast</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>1</p>
+</td><td colspan="1" rowspan="1"><p>Sede 1</p>
+</td><td colspan="1" rowspan="1"><p>192.172.0.0</p>
+</td><td colspan="1" rowspan="1"><p>/25 (255.255.255.128)</p>
+</td><td colspan="1" rowspan="1"><p>192.172.0.1–192.172.0.126</p>
+</td><td colspan="1" rowspan="1"><p>192.172.0.127</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>2</p>
+</td><td colspan="1" rowspan="1"><p>Sede 2</p>
+</td><td colspan="1" rowspan="1"><p>192.172.0.128</p>
+</td><td colspan="1" rowspan="1"><p>/26 (255.255.255.192)</p>
+</td><td colspan="1" rowspan="1"><p>192.172.0.129–192.172.0.190</p>
+</td><td colspan="1" rowspan="1"><p>192.172.0.191</p>
+</td></tr>
+</table>
+<p>La red 192.172.0.0/22 implica:</p>
+<ul>
+<li>Máscara: 255.255.252.0</li>
+<li>Rango de IPs: 192.172.0.1 – 192.172.3.254</li>
+<li>Total de hosts posibles: 1022</li>
+</ul>
+<p>Esta capacidad es suficiente para cubrir ambas sedes y todos los departamentos.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="División por departamentos (VLAN)" duration="0">
+        <p>Para separar el tráfico entre departamentos, se utilizan VLAN (Redes de Área Local Virtual), lo que permite segmentar la red, mejorar la seguridad y simplificar la gestión.</p>
+<h2 is-upgraded>VLAN en Sede 1</h2>
+<p>Se definen dos VLAN:</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p>VLAN</p>
+</td><td colspan="1" rowspan="1"><p>Departamento</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>10</p>
+</td><td colspan="1" rowspan="1"><p>Grupo de departamentos 1</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>20</p>
+</td><td colspan="1" rowspan="1"><p>Grupo de departamentos 2</p>
+</td></tr>
+</table>
+<h2 is-upgraded>VLAN en Sede 2</h2>
+<p>Se define una VLAN:</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p>VLAN</p>
+</td><td colspan="1" rowspan="1"><p>Departamento</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>30</p>
+</td><td colspan="1" rowspan="1"><p>Departamento 3</p>
+</td></tr>
+</table>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Subredes para cada VLAN" duration="0">
+        <p>A partir de las subredes por sede, se subdividen bloques /26 para dar servicio a cada VLAN.<br> Cada VLAN requiere alrededor de 50 hosts, por lo que /26 (62 hosts útiles) se ajusta bien a las necesidades.</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p>Departamento (Sede)</p>
+</td><td colspan="1" rowspan="1"><p>VLAN</p>
+</td><td colspan="1" rowspan="1"><p>Hosts necesarios</p>
+</td><td colspan="1" rowspan="1"><p>NID (Sede)</p>
+</td><td colspan="1" rowspan="1"><p>IP inicio</p>
+</td><td colspan="1" rowspan="1"><p>IP fin</p>
+</td><td colspan="1" rowspan="1"><p>Broadcast</p>
+</td><td colspan="1" rowspan="1"><p>Máscara</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>Departamento 1 (S1)</p>
+</td><td colspan="1" rowspan="1"><p>10</p>
+</td><td colspan="1" rowspan="1"><p>50</p>
+</td><td colspan="1" rowspan="1"><p>192.172.0.0</p>
+</td><td colspan="1" rowspan="1"><p>192.172.0.1</p>
+</td><td colspan="1" rowspan="1"><p>192.172.0.62</p>
+</td><td colspan="1" rowspan="1"><p>192.172.0.63</p>
+</td><td colspan="1" rowspan="1"><p>/26 (255.255.255.192)</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>Departamento 2 (S1)</p>
+</td><td colspan="1" rowspan="1"><p>20</p>
+</td><td colspan="1" rowspan="1"><p>50</p>
+</td><td colspan="1" rowspan="1"><p>192.172.0.64</p>
+</td><td colspan="1" rowspan="1"><p>192.172.0.65</p>
+</td><td colspan="1" rowspan="1"><p>192.172.0.126</p>
+</td><td colspan="1" rowspan="1"><p>192.172.0.127</p>
+</td><td colspan="1" rowspan="1"><p>/26 (255.255.255.192)</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>Departamento 3 (S2)</p>
+</td><td colspan="1" rowspan="1"><p>30</p>
+</td><td colspan="1" rowspan="1"><p>50</p>
+</td><td colspan="1" rowspan="1"><p>192.172.0.128</p>
+</td><td colspan="1" rowspan="1"><p>192.172.0.129</p>
+</td><td colspan="1" rowspan="1"><p>192.172.0.190</p>
+</td><td colspan="1" rowspan="1"><p>192.172.0.191</p>
+</td><td colspan="1" rowspan="1"><p>/26 (255.255.255.192)</p>
+</td></tr>
+</table>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Configuración router-on-a-stick y switches" duration="0">
+        <p>Para permitir que las VLAN se comuniquen entre sí y con el resto de la red, se implementa la técnica router-on-a-stick en los routers de cada sede.</p>
+<h2 is-upgraded>Router Sede 1</h2>
+<p>La interfaz física fa0/0 se configura como troncal hacia el switch, sin dirección IP directa, y se crean subinterfaces para cada VLAN.</p>
+<pre><code>interface fa0/0
+  no ip address
+  no shutdown
+
+! Departamento 1 (VLAN 10)
+interface fa0/0.10
+  encapsulation dot1Q 10
+  ip address 192.172.0.1 255.255.255.192
+
+! Departamento 2 (VLAN 20)
+interface fa0/0.20
+  encapsulation dot1Q 20
+  ip address 192.172.0.65 255.255.255.192
+</code></pre>
+<h2 is-upgraded>Router Sede 2</h2>
+<p>La interfaz fa0/0 se configura igualmente como troncal, creando una subinterfaz para la VLAN 30, que actúa como puerta de enlace del departamento de la sede 2.</p>
+<pre><code>interface fa0/0
+  no ip address
+  no shutdown
+
+! Departamento 3 (VLAN 30)
+interface fa0/0.30
+  encapsulation dot1Q 30
+  ip address 192.172.0.129 255.255.255.192
+</code></pre>
+<p>Con esta configuración, cada departamento dispone de su propia puerta de enlace y puede comunicarse con su VLAN y con el resto de la red.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Enrutamiento RIP entre sedes" duration="0">
+        <p>Para establecer conectividad entre sedes, se configura el protocolo de enrutamiento dinámico RIP versión 2 en ambos routers de las sedes y en el router intermedio.  [web:2]</p>
+<ul>
+<li>Se habilita RIP v2, compatible con VLSM (subredes /25 y /26).</li>
+<li>Se añaden las redes necesarias en cada router para el intercambio correcto de rutas.</li>
+</ul>
+<h2 is-upgraded>Router Sede 1 (izquierda)</h2>
+<pre><code>router rip
+  version 2
+  network 192.172.0.128
+  network 10.0.0.0
+</code></pre>
+<h2 is-upgraded>Router Sede 2 (derecha)</h2>
+<pre><code>router rip
+  version 2
+  network 192.172.0.0
+  network 10.0.0.4
+</code></pre>
+<h2 is-upgraded>Router intermedio</h2>
+<pre><code>router rip
+  version 2
+  network 10.0.0.0
+  network 10.0.0.4
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Control de acceso mediante Port-Security" duration="0">
+        <p>Para reforzar la seguridad y evitar conexiones no autorizadas, se aplica Port-Security en los switches que conectan a los PCs de cada departamento.  [web:12]</p>
+<p>Esta medida permite:</p>
+<ul>
+<li>Impedir que se conecten dispositivos no autorizados.</li>
+<li>Evitar cambios de equipos sin control.</li>
+<li>Reducir el riesgo de ataques como MAC flooding o accesos externos.</li>
+<li>Garantizar que en cada puerto de usuario final solo se permita una dirección MAC.</li>
+</ul>
+<p>Ejemplo de configuración en un puerto de acceso:</p>
+<pre><code>Switch(config)# interface fa0/1
+Switch(config-if)# switchport mode access
+Switch(config-if)# switchport port-security
+Switch(config-if)# switchport port-security maximum 1
+Switch(config-if)# switchport port-security violation restrict
+Switch(config-if)# switchport port-security mac-address sticky
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Resumen de subredes" duration="0">
+        <h2 is-upgraded>Departamento 1 (VLAN 10, Subred 1.1)</h2>
+<ul>
+<li>Dirección de red: 192.172.0.0</li>
+<li>Máscara de red: 255.255.255.192 (/26)</li>
+<li>Primera IP utilizable: 192.172.0.1</li>
+<li>Última IP utilizable: 192.172.0.62</li>
+</ul>
+<h2 is-upgraded>Departamento 2 (VLAN 20, Subred 1.2)</h2>
+<ul>
+<li>Dirección de red: 192.172.0.64</li>
+<li>Máscara de red: 255.255.255.192 (/26)</li>
+<li>Primera IP utilizable: 192.172.0.65</li>
+<li>Última IP utilizable: 192.172.0.126</li>
+</ul>
+<h2 is-upgraded>Departamento 3 (VLAN 30, Subred 2)</h2>
+<ul>
+<li>Dirección de red: 192.172.0.128</li>
+<li>Máscara de red: 255.255.255.192 (/26)</li>
+<li>Primera IP utilizable: 192.172.0.129</li>
+<li>Última IP utilizable: 192.172.0.190</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/prettify.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>

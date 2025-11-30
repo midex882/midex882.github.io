@@ -1,0 +1,26 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2025-11-30T20:25:49+01:00",
+  "id": "proyecto2-la-red-dividida",
+  "duration": 0,
+  "title": "Proyecto 2: La red dividida",
+  "summary": "Guía de bastionado de red empresarial",
+  "source": "codelab.md",
+  "theme": "",
+  "status": [
+    "published"
+  ],
+  "category": [
+    "codelab",
+    "markdown"
+  ],
+  "tags": [
+    "web"
+  ],
+  "feedback": "https://gitlab.com/tu-grupo/proyecto2-la-red-dividida/-/issues",
+  "ga": "UA-XXXXXXXXX-X",
+  "url": "proyecto2-la-red-dividida"
+}

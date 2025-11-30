@@ -19,12 +19,13 @@ export const projects = [
   },
   {
     id: 4,
-    title: "Project Delta",
-    description: "E-commerce platform with seamless payment integration",
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800",
-    tags: ["Next.js", "Stripe", "PostgreSQL"],
-    link: "/projects/delta",
-    github: "https://github.com/yourusername/delta"
-  }
+    title: "Guía de Bastionado de Red",
+    description: "Guía paso por paso en Codelab",
+    image: "/img/project3.png",
+    tags: ["Cisco Packet Tracer"],
+    link: "https://midex882.github.io/projects/bastionado/Gitlab_proyecto2-la-red-dividida",
+    github: "https://github.com/midex882/midex882.github.io/tree/main/public/projects/bastionado/Gitlab_proyecto2-la-red-dividida"
+  },
+  
 ]
 
