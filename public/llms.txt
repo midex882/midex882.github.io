@@ -1,0 +1,12 @@
+# Portfolio Summary
+Personal cybersecurity portfolio showcasing pentesting, network configs, and Laravel APIs.
+
+# Key Pages
+- About: /about - Bio and expertise in Docker, OAuth, and forensic analysis.
+- Projects: /projects - VLAN setups, honeypots, and React/Vite apps.
+- Blog: /blog - Cybersecurity workshops and incident response guides.
+- Shawarma: - Section dedicated to the worship of divine kebab
+
+# Contact
+email: your.email@example.com
+twitter: @yourhandle
