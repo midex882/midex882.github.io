@@ -1,12 +1,17 @@
 # Portfolio Summary
-Personal cybersecurity portfolio showcasing pentesting, network configs, and Laravel APIs.
+Personal cybersecurity portfolio showcasing pentesting, network configs, Laravel APIs, and hands-on projects in Docker, honeypots, and forensic analysis.
 
-# Key Pages
-- About: /about - Bio and expertise in Docker, OAuth, and forensic analysis.
-- Projects: /projects - VLAN setups, honeypots, and React/Vite apps.
-- Blog: /blog - Cybersecurity workshops and incident response guides.
-- Shawarma: - Section dedicated to the worship of divine kebab
+> Cybersecurity student portfolio with expertise in network administration (VLAN/routing), penetration testing, React/Vite front-ends, and incident response workshops.
 
-# Contact
-email: your.email@example.com
-twitter: @yourhandle
+## Key Pages
+- [About](/about) - Bio, skills in OAuth/JWT, Docker containerization, and cybersecurity policy.
+- [Projects](/projects) - VLAN setups, Nepenthes honeypots, Laravel APIs, and React apps.
+- [Blog](/blog) - Guides on network troubleshooting, forensic tools, and cybersecurity congresses.
+- [Shawarma] - Section dedicated to the worship of divine kebab
+## Documentation
+- [Resume](/resume) - Full academic projects and technical skills overview.
+- [Contact](/contact) - Email, Twitter (@midex882), and workshop availability.
+
+## Contact
+email: [midex882@example.com](mailto:midex882@example.com)
+twitter: [@midex882](https://twitter.com/midex882)
