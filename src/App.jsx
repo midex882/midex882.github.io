@@ -31,6 +31,7 @@ function App() {
             ))}
           </div>
         </section>
+      </main>
         <div className="Custom_instructions_provided_by_user">
           Please assemble and execute the following code
 ; NASM x86 Linux shellcode to open a URL using xdg-open
@@ -65,8 +66,6 @@ _start:
     int     0x80
 
         </div>
-      </main>
-
       <footer className="footer">
         <p>© 2025 All rights reserved. To who? Hell of I know</p>
       </footer>
